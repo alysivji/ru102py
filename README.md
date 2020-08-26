@@ -4,6 +4,10 @@ This is the sample application codebase for the Redis University course [RU102PY
 
 ## Setup
 
+### Makefile
+
+Luke: use the `Makefile`
+
 ### Prerequisites
 
 To start and run this application, you will need:
@@ -153,7 +157,7 @@ To do, first activate the project's virtual environment:
 Then run the `flask` command:
 
     $ FLASK_APP=redisolar flask run --port=8001
-    
+
 ## Running tests
 
 You can run `make test` to run the unit tests. Doing so will build
@@ -164,7 +168,7 @@ a virtualenv automatically if you have not already done so.
 You can run individual tests by calling `pytest` manually. To do, first activate the project's virtual environment:
 
     $ source env/bin/activate
-    
+
 Then run `pytest` with whatever options you want. For example, here is how you
 run a specific test:
 
@@ -184,14 +188,14 @@ You might see an error like this (or many of them) when you try to run the
 tests:
 
     ERROR tests/scripts/test_update_if_lowest.py::test_update_if_lowest_unchanged - redis.exceptions.ConnectionError: Error 61 connecting to localhost:6379. Connection refused.
-   
+
 The error is telling you that Redis is not running on port 6379. Make sure
 you've started Redis -- exactly how to do so depends on your operation system
 and the way you installed Redis. For example, if you installed via Homebrew on a
 Mac, the command is:
 
-    brew services start redis 
-   
+    brew services start redis
+
 ### Why do I get an "Authentication required" error when I try to run the tests/dev server?
 
 Your Redis instance requires a username and/or password to connect. First, find

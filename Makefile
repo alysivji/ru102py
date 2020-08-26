@@ -16,8 +16,6 @@ endif
 
 all: env mypy lint test
 
-env: env/bin/activate
-
 env/bin/activate: requirements.txt
 	test -d env || python3.8 -m venv env
 	. env/bin/activate; pip install wheel; pip install -Ue ".[dev]"
@@ -26,9 +24,6 @@ env/bin/activate: requirements.txt
 mypy: env
 	. env/bin/activate; mypy --ignore-missing-imports redisolar
 
-test: env
-	. env/bin/activate; pytest $(FLAGS)
-
 lint: env
 	. env/bin/activate; pylint redisolar
 
@@ -36,17 +31,24 @@ clean:
 	rm -rf env
 	find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
 
-dev: env
-	. env/bin/activate; FLASK_ENV=development FLASK_APP=$(APP) FLASK_DEBUG=1 flask run --port=$(PORT) --host=0.0.0.0
-
 frontend: env
 	cd frontend; npm run build
 	rm -rf redisolar/static
 	cp -r frontend/dist/static redisolar/static
 	cp frontend/dist/index.html redisolar/static/
 
-load: env
-	. env/bin/activate; FLASK_APP=$(APP) flask load
+# Below here is how to run
+
+env: env/bin/activate
 
 timeseries-docker:
 	docker run -p 6379:6379 -it -d --rm redislabs/redistimeseries
+
+load: env
+	. env/bin/activate; FLASK_APP=$(APP) flask load
+
+dev: env
+	. env/bin/activate; FLASK_ENV=development FLASK_APP=$(APP) FLASK_DEBUG=1 flask run --port=$(PORT) --host=0.0.0.0
+
+test: env
+	. env/bin/activate; pytest $(flags)
