@@ -41,8 +41,11 @@ frontend: env
 
 env: env/bin/activate
 
-timeseries-docker:
-	docker run -p 6379:6379 -it -d --rm redislabs/redistimeseries
+docker:
+	docker run -p 6379:6379 -it -d --rm --name redis redislabs/redistimeseries
+
+docker-stop:
+	docker stop redis
 
 load: env
 	. env/bin/activate; FLASK_APP=$(APP) flask load
