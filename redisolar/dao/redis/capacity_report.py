@@ -34,7 +34,6 @@ class CapacityReportDaoRedis(CapacityDaoBase, RedisDaoBase):
 
     def get_rank(self, site_id: int, **kwargs) -> float:
         # START Challenge #4
-        # Remove the following line after you have added code to
-        # get the real rank.
-        return 0
+        capacity_ranking_key = self.key_schema.capacity_ranking_key()
+        return self.redis.zrevrank(capacity_ranking_key, site_id)
         # END Challenge #4

@@ -28,6 +28,15 @@ class FeedDaoRedis(FeedDaoBase, RedisDaoBase):
                 pipeline: redis.client.Pipeline) -> None:
         """Helper method to insert a meter reading."""
         # START Challenge #6
+        my_dict = {
+            "site_id": meter_reading.site_id,
+            "wh_used": meter_reading.wh_used,
+            "wh_generated": meter_reading.wh_generated,
+            "temp_c": meter_reading.temp_c,
+            "timestamp": meter_reading.timestamp.timestamp(),
+        }
+        pipeline.xadd(self.key_schema.global_feed_key(), fields=my_dict)
+        pipeline.xadd(self.key_schema.feed_key(meter_reading.site_id), fields=my_dict)
         # END Challenge #6
 
     def get_recent_global(self, limit: int, **kwargs) -> List[MeterReading]:
@@ -42,3 +51,13 @@ class FeedDaoRedis(FeedDaoBase, RedisDaoBase):
             MeterReadingSchema().load(entry[1])
             for entry in self.redis.xrevrange(key, count=limit)
         ]
+
+    def get_recent_ids(key, count):
+        ids = []
+        client = redis.Redis(decode_responses=True)
+        entries = client.xrevrange(key, count=count)
+
+        for entry in entries:
+            ids.append(entry[0])
+
+        return ids
