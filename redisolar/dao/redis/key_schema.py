@@ -115,7 +115,6 @@ class KeySchema:
     def timeseries_key(self, site_id: int, unit: MetricUnit) -> str:
         return f"sites:ts:{site_id}:{unit.value}"
 
-
     # Test keys
     @prefixed_key
     def planets_list_key(self) -> str:

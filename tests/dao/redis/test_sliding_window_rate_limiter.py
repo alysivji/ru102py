@@ -1,14 +1,12 @@
 import time
 
-import pytest
-
 from redisolar.dao.base import RateLimitExceededException
 from redisolar.dao.redis.sliding_window_rate_limiter import SlidingWindowRateLimiter
 
 TEN_SECONDS = 10 * 1000
 
+
 # Challenge #7
-@pytest.mark.skip("Remove for challenge #7")
 def test_within_limit_inside_window(redis, key_schema):
     exception_count = 0
     limiter = SlidingWindowRateLimiter(TEN_SECONDS, 10, redis, key_schema=key_schema)
@@ -22,7 +20,6 @@ def test_within_limit_inside_window(redis, key_schema):
     assert exception_count == 0
 
 
-@pytest.mark.skip("Remove for challenge #7")
 def test_exceeds_limit_inside_window(redis, key_schema):
     exception_count = 0
     limiter = SlidingWindowRateLimiter(TEN_SECONDS, 10, redis, key_schema=key_schema)
@@ -36,7 +33,6 @@ def test_exceeds_limit_inside_window(redis, key_schema):
     assert exception_count == 2
 
 
-@pytest.mark.skip("Remove for challenge #7")
 def test_exceeds_limit_outside_window(redis, key_schema):
     raised = False
     limiter = SlidingWindowRateLimiter(100, 10, redis, key_schema=key_schema)
